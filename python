@@ -1,0 +1,120 @@
+class Card(object):
+    def __init__ (self, rank, suit, points):
+        self.rank = rank
+        self.suit = suit
+        self.points = points
+
+    def __repr__ (self):
+        return str(self.rank) + self.suit
+
+    def getpoint (self):
+        return self.points
+
+    def getrank (self):
+        return self.rank
+       
+         
+def deck():
+    '''creates a deck of cards'''
+    rank = {'A':11, 2: 2, 3:3, 4:4, 5:5, 6:6,
+            7:7,8:8 ,9:9 , 10:10,
+            'J':10, 'Q':10, 'K':10}          #creates a dictionary of all ranks and values
+    suit = ['S', 'C', 'D', 'H']
+
+    new_deck = []    #creating a blank list for the deck
+    for key in rank:
+        for s in suit: 
+            new_deck.append(Card(str(key),s,rank[key]))
+            
+    return new_deck
+
+def create_shoe(deck):
+    '''creates 4 decks in a blackjack shoe in the form of a dictionary with the Card string
+    and the number of the card left in the deck'''
+    shoe = {}
+    for card in deck:
+        shoe[card]= 4
+    return shoe
+
+base_deck = deck()  #creates a standard 52 card deck to be used for dealing
+
+def deal_card(shoe):
+    '''deals a card from the deck'''
+    from random import randint
+    dealt_card = base_deck[randint(0,51)]  #randomly draws a card from the base deck
+
+    if shoe[dealt_card] == 0:    #checks to see if the card is in the shoe
+        deal_card(shoe)         #if not calls the funciton to find a card that is
+    else:
+        shoe[dealt_card] -=1    #reduces the number of that card in the shoe and
+        return dealt_card       #returns the card
+
+def hand_points(hand):
+    '''gives the value of the hand'''
+    ace = False
+    total = 0
+
+    for i in hand:
+        total += i.getpoint()   #gets values for cards and checks for aces
+        if i.getrank() == 'A':
+            ace = True
+
+    if (total > 21 and ace == True):   #makes ace =1 if 21 is overshot
+        total -= 10
+
+    return total
+    
+def dealer_play(dealer_hand, shoe):
+    '''lets dealer play with standard rule of hit on 16 stay on 17'''
+
+    total = handpoints(hand)
+
+    print ("Dealer has " + str(total))
+
+    if total < 17:
+        dealer_hand.appdend(deal_card(shoe))
+        print ("Dealer hits on 16 or less. \n  Dealer hand is:")
+        print (dealer_hand)                  #tells player dealer hits 
+        dealer_play(dealer_hand, shoe)       #checks value again
+
+    elif (total >=17 and total < 22):       
+        print ("Dealer stays on 17 or higher")
+
+    else:
+        print ("Dealer busts")
+               
+    return total
+        
+def initial_cards(shoe):
+    '''deals 2 cards to player and dealer returns dealer hand as
+    first hand player hand as second in a list'''
+    player_hand = [deal_card(shoe)]
+    dealer_hand = [deal_card(shoe)]
+    player_hand.append(deal_card(shoe))
+    dealer_hand.append(deal_card(shoe))
+    print (dealer_hand)
+    print (player_hand)
+    return [dealer_hand, player_hand]
+
+    
+
+    
+def blackjack():
+    '''starts a game of blackjack.'''
+    Money = 500
+    shoe = create_shoe(base_deck)   #Sets starting conditions of money and a starting shoe
+    bet = 0
+    
+    while (money > 0):
+        
+        while (bet != type(3) or bet <1 or bet > money)  #makes sure bet is legal
+           bet = input('What would you like to bet, you have $' + str(money) + '\n')
+
+        hands = initial_cards(shoe)
+        print ('Dealer shows: ' + str(hands[0][0]) + ' for a value of  ' + getpoint(hands[0][0]) + "\n \n")
+
+        print ("Your hand is:  %s. \n  You have a value of " + str(handpoints(hand[1])), hand[1])
+
+        for playerhands in hands[1:]:
+               if hand_points(playerhands) == 21:
+                   print ("Blackjack!")
