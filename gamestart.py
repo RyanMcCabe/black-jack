@@ -22,14 +22,17 @@ def deck():
     '''creates a deck of cards'''
                              
     from PyQt4 import QtGui
+    import os
+    
     #creates a dictionary of all ranks and values
     rank = {'A':11, '2': 2, '3':3, '4':4, '5':5, '6':6,'7': 7,'8':8 ,'9':9 , '10':10, 'J':10, 'Q':10, 'K':10} 
     suit = ['S', 'C', 'D', 'H']
 
     new_deck = []    #creating a blank list for the deck
+    path = os.getcwd()  #gets the current directory to use to find the image of the cards
     for key in rank:
         for s in suit:
-            image = QtGui.QImage('c:/users/computer/dropbox/final/cards/' + s + key + '.png')
+            image = QtGui.QImage(path + '/cards/' + s + key + '.png')
             new_deck.append(Card(str(key),s,rank[key], image))
     return new_deck
 
