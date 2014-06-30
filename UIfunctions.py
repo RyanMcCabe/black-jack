@@ -17,7 +17,8 @@ def showcard (card_ui, card):
 
 def showback(card_ui):
     '''shows the back of a card for the dealers face down card in the ui'''
-    image = QtGui.QImage('c:/users/computer/dropbox/final/cards/back.png')
+    path = os.getcwd()  #gets current directory to use to find the image of the back of the card
+    image = QtGui.QImage(path + '/cards/back.png')
     pixmap = QtGui.QPixmap(image)
     card_ui.setPixmap(pixmap)
     card_ui.setHidden(False)
