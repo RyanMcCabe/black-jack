@@ -6,6 +6,7 @@ Created on Jun 19, 2014
 from PyQt4 import QtGui
 import gamestart
 import gamefunctions
+import os
 
 def showcard (card_ui, card):
     '''Takes the image of the card from the card class in gamestart  and shows it on the ui'''
