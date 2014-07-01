@@ -41,7 +41,7 @@ class main(QtGui.QMainWindow):
             else:
                 betfunction(self)       
         except:  
-            self.ui.labWarning.setText("Please enter a number less than your " + str(self.money) + " and greater than 0")
+            self.ui.labWarning.setText("Please enter a number less than " + str(self.money) + " and greater than 0")
         
         self.ui.lineBet.clear()
                           
